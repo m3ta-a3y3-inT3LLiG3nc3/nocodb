@@ -1,0 +1,26 @@
+{
+  "name": "nc-desktop",
+  "version": "0.301.3",
+  "description": "NocoDB Desktop Application for macOS, Windows, and Linux with built-in M3ta-Os REA MCP integration",
+  "main": "src/main.js",
+  "private": true,
+  "author": {
+    "name": "NocoDB & M3ta-Os",
+    "url": "https://nocodb.com"
+  },
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron .",
+    "dist:mac": "electron-builder --mac",
+    "dist:mac:arm64": "electron-builder --mac --arm64",
+    "dist:mac:x64": "electron-builder --mac --x64",
+    "dist:win": "electron-builder --win",
+    "dist:linux": "electron-builder --linux",
+    "dist:all": "electron-builder -mwl"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "electron": "^34.3.0",
+    "electron-builder": "^25.1.8"
+  }
+}

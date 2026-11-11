@@ -1,0 +1,26 @@
+{
+  "$schema": "https://modelcontextprotocol.io/schema.json",
+  "name": "m3ta-os-rea-nocodb",
+  "description": "M3ta-Os Remote Execution Agent (REA) MCP Configuration for NocoDB",
+  "version": "1.0.0",
+  "mcpServers": {
+    "nocodb": {
+      "type": "http",
+      "url": "http://localhost:8080/mcp/${NOCODB_MCP_TOKEN_ID}",
+      "headers": {
+        "xc-mcp-token": "${NOCODB_MCP_TOKEN}"
+      },
+      "capabilities": {
+        "tools": [
+          "listBases",
+          "listTables",
+          "describeTable",
+          "queryRecords",
+          "createRecord",
+          "updateRecord",
+          "deleteRecord"
+        ]
+      }
+    }
+  }
+}

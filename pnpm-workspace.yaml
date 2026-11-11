@@ -6,6 +6,7 @@ packages:
   - "packages/nocodb"
 
   - "packages/nc-secret-mgr"
+  - "packages/nc-desktop"
 
 # Supply chain security settings (pnpm 10.16+)
 # Quarantine newly published versions for 7 days before allowing install.
