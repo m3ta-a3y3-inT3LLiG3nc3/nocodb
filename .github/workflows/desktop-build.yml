@@ -1,0 +1,118 @@
+name: Build Desktop App
+
+on:
+  push:
+    paths:
+      - 'packages/nc-desktop/**'
+      - '.github/workflows/desktop-build.yml'
+    branches:
+      - develop
+      - main
+  workflow_dispatch:
+  release:
+    types: [created]
+
+jobs:
+  build-mac:
+    name: Build macOS (DMG & Zip)
+    runs-on: macos-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v5
+        with:
+          version: 10
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24.22.1
+          cache: 'pnpm'
+
+      - name: Install Dependencies
+        run: |
+          pnpm --filter=nc-desktop install
+
+      - name: Build macOS Artifacts
+        run: |
+          cd packages/nc-desktop
+          pnpm exec electron-builder --mac dmg zip --universal
+
+      - name: Upload macOS Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: NocoDB-macOS
+          path: |
+            packages/nc-desktop/dist-package/*.dmg
+            packages/nc-desktop/dist-package/*.zip
+
+  build-windows:
+    name: Build Windows (EXE)
+    runs-on: windows-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v5
+        with:
+          version: 10
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24.22.1
+          cache: 'pnpm'
+
+      - name: Install Dependencies
+        run: |
+          pnpm --filter=nc-desktop install
+
+      - name: Build Windows Artifacts
+        run: |
+          cd packages/nc-desktop
+          pnpm exec electron-builder --win nsis portable
+
+      - name: Upload Windows Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: NocoDB-Windows
+          path: |
+            packages/nc-desktop/dist-package/*.exe
+
+  build-linux:
+    name: Build Linux (AppImage & Deb)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v5
+        with:
+          version: 10
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24.22.1
+          cache: 'pnpm'
+
+      - name: Install Dependencies
+        run: |
+          pnpm --filter=nc-desktop install
+
+      - name: Build Linux Artifacts
+        run: |
+          cd packages/nc-desktop
+          pnpm exec electron-builder --linux AppImage deb
+
+      - name: Upload Linux Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: NocoDB-Linux
+          path: |
+            packages/nc-desktop/dist-package/*.AppImage
+            packages/nc-desktop/dist-package/*.deb
